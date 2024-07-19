@@ -1,0 +1,17 @@
+server:
+    port: 8080
+spring:
+    application:
+        name: accounts-micro-service
+    datasource:
+        password: root
+        url: jdbc:mysql://localhost:3306/eazy_bank?useSSL=false
+        username: root
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+                format_sql: true
+        show-sql: true
