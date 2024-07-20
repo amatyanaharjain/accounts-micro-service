@@ -3,6 +3,8 @@ package com.naharamatya.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +26,15 @@ public class AccountsController {
 	public ResponseEntity<ResponseDTO> createAccount(@RequestBody CustomerDTO customerDto){
 		accountsService.createAccount(customerDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
+	}
+	
+	@GetMapping("/fetch/{mobileNumber}")
+	public ResponseEntity<CustomerDTO> fetchAccountDetailsByMobileNumber(@PathVariable String mobileNumber){
+		CustomerDTO customerDto = new CustomerDTO();
+		
+		customerDto = accountsService.fetchAccountDetailsByMobileNumber(mobileNumber);
+		
+		
+		return ResponseEntity.status(HttpStatus.OK).body(customerDto);
 	}
 }

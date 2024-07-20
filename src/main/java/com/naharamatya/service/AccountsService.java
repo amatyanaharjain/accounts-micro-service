@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.naharamatya.constants.AccountsConstants;
+import com.naharamatya.dto.AccountsDTO;
 import com.naharamatya.dto.CustomerDTO;
 import com.naharamatya.entity.Accounts;
 import com.naharamatya.entity.Customer;
 import com.naharamatya.exception.CustomerAlreadyExistException;
+import com.naharamatya.exception.ResourceNotFoundException;
+import com.naharamatya.mapper.AccountsMapper;
 import com.naharamatya.mapper.CustomerMapper;
 import com.naharamatya.repository.AccountsRepository;
 import com.naharamatya.repository.CustomerRepository;
@@ -50,6 +53,26 @@ public class AccountsService {
 		newAccount.setCreatedAt(LocalDateTime.now());
 		newAccount.setCreatedBy("Anonymous");
 		return newAccount;
+	}
+
+	public CustomerDTO fetchAccountDetailsByMobileNumber(String mobileNumber) {
+	
+		CustomerDTO customerDto = new CustomerDTO();
+		Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+				()-> new ResourceNotFoundException("Customer not found with mobileNumber " +mobileNumber)
+				);
+		
+		Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+				()-> new ResourceNotFoundException("Account not found with customer ID  " +customer.getCustomerId())
+				);
+		
+		
+		customerDto = CustomerMapper.mapToCustomerDto(customer, customerDto);
+		AccountsDTO accountsDto = AccountsMapper.mapToAccountsDto(accounts, new AccountsDTO());
+		customerDto.setAccountsDto(accountsDto);
+		
+		
+		return customerDto;
 	}
 
 }
