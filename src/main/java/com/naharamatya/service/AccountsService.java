@@ -102,4 +102,18 @@ public class AccountsService {
 		return updated;
 	}
 
+	public boolean deleteAccount(String mobileNumber) {
+		boolean updated = false;
+		
+		Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+				()-> new ResourceNotFoundException("Customer not found with mobile number " + mobileNumber)
+				);
+		
+		customerRepository.deleteById(customer.getCustomerId());
+		accountsRepository.deleteByCustomerId(customer.getCustomerId());
+		updated = true;
+		
+		return updated;
+	}
+
 }
