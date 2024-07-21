@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +37,22 @@ public class AccountsController {
 		
 		
 		return ResponseEntity.status(HttpStatus.OK).body(customerDto);
+	}
+	
+	@PutMapping("/update")
+	public ResponseEntity<ResponseDTO> updateAccountDetails(@RequestBody CustomerDTO customerDto){
+		
+		boolean updated = false;
+		
+		updated = accountsService.updateAccountDetails(customerDto);
+		
+		if(updated) {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
+		}
+		
+		
+		
 	}
 }
