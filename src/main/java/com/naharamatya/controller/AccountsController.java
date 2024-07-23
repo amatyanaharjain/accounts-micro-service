@@ -37,8 +37,8 @@ public class AccountsController {
 	}
 
 	@GetMapping("/fetch/{mobileNumber}")
-	public ResponseEntity<CustomerDTO> fetchAccountDetailsByMobileNumber(@Valid @PathVariable 
-			@Pattern(regexp="(^$|[0-9]{10})", message="Mobile number must be 10 digits") String mobileNumber) {
+	public ResponseEntity<CustomerDTO> fetchAccountDetailsByMobileNumber(
+			@Valid @PathVariable @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits") String mobileNumber) {
 		CustomerDTO customerDto = new CustomerDTO();
 
 		customerDto = accountsService.fetchAccountDetailsByMobileNumber(mobileNumber);
@@ -62,20 +62,22 @@ public class AccountsController {
 		}
 
 	}
-	
+
 	@DeleteMapping("/delete/{mobileNumber}")
-	public ResponseEntity<ResponseDTO> deleteAccount(@Valid @PathVariable 
-			@Pattern(regexp="(^$|[0-9]{10})", message="Mobile number must be 10 digits") String mobileNumber){
-		
+	public ResponseEntity<ResponseDTO> deleteAccount(
+			@Valid @PathVariable @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits") String mobileNumber) {
+
 		boolean updated = false;
-		
+
 		updated = accountsService.deleteAccount(mobileNumber);
-		
-		if(updated) {
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
+
+		if (updated) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseDTO(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseDTO(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
 		}
-		
+
 	}
 }

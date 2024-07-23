@@ -35,8 +35,7 @@ public class AccountsService {
 		if(optionalCustomer.isPresent()) {
 			throw new CustomerAlreadyExistException("Customer already exists having mobile number " + customer.getMobileNumber() );
 		}
-		customer.setCreatedAt(LocalDateTime.now());
-		customer.setCreatedBy("Anonymous");
+		
 		Customer savedCustomer = customerRepository.save(customer);
 		
 		accountsRepository.save(createNewAccount(savedCustomer.getCustomerId()));
@@ -50,8 +49,7 @@ public class AccountsService {
 		newAccount.setAccountNo(randomAccountNumber);
 		newAccount.setAccount_type(AccountsConstants.SAVINGS);
 		newAccount.setBranch_address(AccountsConstants.ADDRESS);
-		newAccount.setCreatedAt(LocalDateTime.now());
-		newAccount.setCreatedBy("Anonymous");
+		
 		return newAccount;
 	}
 
